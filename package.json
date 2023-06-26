@@ -1,0 +1,30 @@
+{
+  "name": "gpt-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/ms-rest-nodeauth": "^3.1.1",
+    "assemblyai": "^1.0.1",
+    "body-parser": "^1.20.2",
+    "deepspeech": "^0.6.1",
+    "google-tts-api": "^2.0.2",
+    "got": "^11.8.0",
+    "gtts": "^0.2.1",
+    "microsoft-cognitiveservices-speech-sdk": "^1.29.0",
+    "nodemon": "^2.0.22",
+    "openai": "^3.3.0",
+    "openai-whisper": "^1.0.2",
+    "path": "^0.12.7",
+    "play-sound": "^1.1.5",
+    "socket.io": "^4.7.0",
+    "socket.io-client": "^4.7.0",
+    "wav": "^1.0.2"
+  }
+}

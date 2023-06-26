@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voice Bot</title>
+</head>
+<body>
+  <center>
+  <h1>Voice Bot</h1>
+  <button id="recordButton">Record</button>
+  <div id="result"></div>
+</center>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+  <script src="script.js"></script>
+  
+  <audio id="audioPlayer"></audio>
+  <script>
+const socket = io();
+
+// Handle the 'audioFile' event
+socket.on('audioFile', (data) => {
+  // Get the audio element by its ID
+  console.log(data.audio);
+  const audioPlayer = document.getElementById('audioPlayer');
+  
+  // Set the base64-encoded audio data as the source of the audio element
+  audioPlayer.src = 'data:audio/mp3;base64,' + data.audio;
+  
+  // Play the audio
+  audioPlayer.play();
+});
+
+  </script>
+</body>
+</html>
