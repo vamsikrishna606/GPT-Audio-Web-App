@@ -16,15 +16,9 @@
   <script>
 const socket = io();
 
-// Handle the 'audioFile' event
 socket.on('audioFile', (data) => {
-  // Get the audio element by its ID
-  console.log(data.audio);
   const audioPlayer = document.getElementById('audioPlayer');
-  
-  // Set the base64-encoded audio data as the source of the audio element
   audioPlayer.src = 'data:audio/mp3;base64,' + data.audio;
-  
   // Play the audio
   audioPlayer.play();
 });
