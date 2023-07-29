@@ -26,37 +26,43 @@ io.on('connection', (socket) => {
   });
 });
 
+
 function processAudio(audioUrl) {
-  const SAMPLE_RATE = 44100; 
+  const SAMPLE_RATE = 44100;
 
   const authHeader = {
     Authorization: 'ab6cf1ba45674cae8413309f5353dbeb'
   };
+fetch(audioUrl)
+    .then(response => response.arrayBuffer())
+    .then(audioBuffer => {
+      const ws = new WebSocket(`wss://api.assemblyai.com/v2/realtime/ws?sample_rate=${SAMPLE_RATE}`, {
+        headers: authHeader
+      });
 
-  const ws = new WebSocket(`wss://api.assemblyai.com/v2/realtime/ws?sample_rate=${SAMPLE_RATE}`, {
-    headers: authHeader
-  });
+      ws.onopen = () => {
+        console.log('WebSocket connection opened');
+        ws.send(audioBuffer); // Send the audio data to the WebSocket
+      };
 
-  ws.on('open', () => {
-    console.log('WebSocket connection opened');
-  });
+      ws.onmessage = (message) => {
+        console.log('Received message:', message);
+        const messageString = message.data.toString();
+        const parsedMessage = JSON.parse(messageString);
+        const transcription = parsedMessage.text;
+        processTextAndGenerateSpeech(transcription);
+      };
 
-ws.on('message', async (message) => {
-    console.log('Received message:', message);
-    const messageString = message.toString(); 
-   const parsedMessage = JSON.parse(messageString); 
-    const transcription = parsedMessage.text;
-     processTextAndGenerateSpeech(transcription);
-  });
-  ws.on('error', (error) => {
-    console.error('WebSocket error:', error);
-  });
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
 
-  ws.on('close', (code, reason) => {
-    console.log('WebSocket connection closed');
-    console.log('Close code:', code);
-    console.log('Reason:', reason);
-  });
+      ws.onclose = (event) => {
+        console.log('WebSocket connection closed');
+        console.log('Close code:', event.code);
+        console.log('Reason:', event.reason);
+      };
+    })
 }
 
 // Start the server
